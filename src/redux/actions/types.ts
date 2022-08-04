@@ -1,0 +1,2 @@
+export const STORE_RESPONSE = 'STORE_RESPONSE';
+export const STORE_RECORD = 'STORE_RECORD';
