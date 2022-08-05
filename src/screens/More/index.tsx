@@ -1,23 +1,10 @@
-import React, {useEffect} from 'react';
-import {View, StatusBar} from 'react-native';
+import React from 'react';
+import {View} from 'react-native';
 import styles from "./styles";
 import Button from "../../components/Button";
 import {openModal} from '../../navigation';
-import {Navigation} from "react-native-navigation";
 
 const More = () => {
-
-    useEffect(()=>{
-        const listener = Navigation.events().registerModalDismissedListener(() => {
-            StatusBar.setBarStyle('dark-content')
-        })
-
-        return ()=>{
-            if(listener){
-                listener.remove();
-            }
-        }
-    },[])
     return (
         <View style={styles.container}>
             <Button

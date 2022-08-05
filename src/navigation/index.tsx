@@ -1,6 +1,6 @@
 import React from "react";
 import {Navigation} from "react-native-navigation";
-import { LogBox, StatusBar } from 'react-native';
+import { LogBox } from 'react-native';
 import {Provider} from 'react-redux';
 import store from "../redux/store";
 
@@ -79,11 +79,15 @@ export const launchApp = () => {
 
 // open modal
 export const openModal = () => {
-    StatusBar.setBarStyle('light-content')
     Navigation.showModal({
         stack: {
             id: 'modalStack',
             options: {
+                statusBar:{
+                    animated: true,
+                    style: 'light',
+                    visible: true
+                },
                 topBar: {
                     noBorder: true,
                     animateLeftButtons: true,
