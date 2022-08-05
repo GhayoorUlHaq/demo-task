@@ -9,7 +9,11 @@ import {storeResponse} from "../../redux/actions";
 import {Navigation} from "react-native-navigation";
 import AddFoam from "./AddFoam";
 
-const Flatlist = (props) => {
+interface FlatlistProps {
+    componentId?: any;
+}
+
+const Flatlist: React.FC<FlatlistProps> = (props) => {
     const {componentId} = props;
     const dispatch = useDispatch();
     const {dataList} = useSelector((state: Store) => state.app);
@@ -18,6 +22,14 @@ const Flatlist = (props) => {
     const mergeOptions = () => {
         Navigation.mergeOptions(componentId, {
             topBar: {
+                visible: true,
+                title: {
+                    text: 'My Modal'
+                },
+                backButton: {
+                    visible: false,
+                    showTitle: false
+                },
                 rightButtons: [
                     {
                         id: 'modalRightButton',
@@ -84,18 +96,5 @@ const Flatlist = (props) => {
         </View>
     );
 };
-
-Flatlist.options = {
-    topBar: {
-        visible: true,
-        title: {
-            text: 'My Modal'
-        },
-        backButton: {
-            visible: false,
-            showTitle: false
-        },
-    }
-}
 
 export default Flatlist;

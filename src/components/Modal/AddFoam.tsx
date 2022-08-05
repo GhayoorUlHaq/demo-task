@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {View, TextInput} from 'react-native';
 import styles from './styles';
 import Button from '../Button';
@@ -6,7 +6,11 @@ import {storeRecord} from "../../redux/actions";
 import {useDispatch} from "react-redux";
 import {Navigation} from "react-native-navigation";
 
-const AddFoam  = (props) => {
+interface AddFoamProps {
+    componentId?: any;
+}
+
+const AddFoam: React.FC<AddFoamProps>  = (props) => {
     const {componentId} = props;
     const dispatch = useDispatch();
     const [value, setValue] = useState<string>('');
@@ -16,8 +20,23 @@ const AddFoam  = (props) => {
         dispatch(storeRecord(value));
         setValue('');
         Navigation.pop(componentId)
-
     }
+
+    useEffect(() => {
+        Navigation.mergeOptions(componentId, {
+            topBar: {
+                animate: true,
+                visible: true,
+                title: {
+                    text: 'Adding data'
+                },
+                backButton: {
+                    color: '#9b9b9b',
+                    showTitle: false,
+                }
+            }
+        })
+    },[]);
 
     return (
         <View style={styles.foamContainer}>
@@ -37,19 +56,5 @@ const AddFoam  = (props) => {
         </View>
     );
 };
-
-AddFoam.options = {
-    topBar: {
-        animate: true,
-        visible: true,
-        title: {
-            text: 'Adding data'
-        },
-        backButton: {
-            color: '#9b9b9b',
-            showTitle: false,
-        }
-    }
-}
 
 export default AddFoam;

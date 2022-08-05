@@ -2,7 +2,8 @@ import React from "react";
 import {Navigation} from "react-native-navigation";
 import { LogBox } from 'react-native';
 import {Provider} from 'react-redux';
-import store from "../redux/store";
+import store, {persistor} from "../redux/store";
+import {PersistGate} from 'redux-persist/integration/react'
 
 import Home from '../screens/Home';
 import More from '../screens/More';
@@ -12,16 +13,30 @@ import ModalHeaderButton from "../components/ModalHeaderButton";
 
 LogBox.ignoreAllLogs(); // ignore warning as getting splash screen warning due to expo
 
+// Wrapper function for redux
+function ReduxWrapper(Component) {
+    return function inject(props) {
+        const EnhancedComponent = () => (
+            <Provider store={store}>
+                <PersistGate loading={null} persistor={persistor}>
+                    <Component {...props}/>
+                </PersistGate>
+            </Provider>
+        );
+        return <EnhancedComponent />;
+    };
+}
+
 // Register all the components we need to use in navigation with default options
 export const registerComponents = () => {
     const activeTabColor = 'rgb(58,104,239)';
     const inActiveTabColor = 'rgb(198,198,198)';
 
-    Navigation.registerComponentWithRedux('Home', () => Home, Provider, store);
-    Navigation.registerComponentWithRedux('ModalHeaderButton', () => ModalHeaderButton, Provider, store);
-    Navigation.registerComponentWithRedux('More', () => More, Provider, store);
-    Navigation.registerComponentWithRedux('AddFoam', () => AddFoam, Provider, store);
-    Navigation.registerComponentWithRedux('Flatlist', () => Flatlist, Provider, store);
+    Navigation.registerComponent('Home', () => ReduxWrapper(Home));
+    Navigation.registerComponent('ModalHeaderButton', () => ReduxWrapper(ModalHeaderButton));
+    Navigation.registerComponent('More', () => ReduxWrapper(More));
+    Navigation.registerComponent('AddFoam', () => ReduxWrapper(AddFoam));
+    Navigation.registerComponent('Flatlist', () => ReduxWrapper(Flatlist));
 
     Navigation.setDefaultOptions({
         topBar: {
@@ -36,7 +51,7 @@ export const registerComponents = () => {
             selectedTextColor: activeTabColor,
             iconColor: inActiveTabColor,
             selectedIconColor: activeTabColor,
-        }
+        },
     });
 
 }

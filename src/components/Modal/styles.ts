@@ -41,7 +41,8 @@ const styles = StyleSheet.create({
     },
     flatListContainer: {
         flex:1,
-        paddingHorizontal: 15
+        paddingHorizontal: 15,
+        marginTop: 50
     },
     flatListItemContainer: {
         paddingHorizontal: 15,
