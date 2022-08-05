@@ -1,16 +1,17 @@
-import React, {Dispatch, SetStateAction, useState} from 'react';
+import React, {useState} from 'react';
 import {View, TextInput} from 'react-native';
 import styles from './styles';
 import Button from '../Button';
 import {storeRecord} from "../../redux/actions";
 import {useDispatch} from "react-redux";
+import Header from "./Header";
 
 interface AddFoamProps {
-    setAdd: Dispatch<SetStateAction<boolean>>
+    navigate: () => void;
 }
 
 const AddFoam: React.FC<AddFoamProps> = (props) => {
-    const {setAdd} = props;
+    const { navigate } = props;
     const dispatch = useDispatch();
     const [value, setValue] = useState<string>('');
 
@@ -18,13 +19,14 @@ const AddFoam: React.FC<AddFoamProps> = (props) => {
     const handleDoneButton = () => {
         dispatch(storeRecord(value));
         setValue('');
-        setAdd(false);
+        navigate();
     }
 
     return (
         <View style={styles.foamContainer}>
+            <Header navigate={navigate} add={true} />
             <TextInput
-                autoFocus={true}
+                autoFocus={false}
                 value={value}
                 onChangeText={setValue}
                 placeholder={'Add your text here'}

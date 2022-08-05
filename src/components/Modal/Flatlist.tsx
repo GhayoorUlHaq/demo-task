@@ -1,15 +1,38 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {View, FlatList, Text, ActivityIndicator} from 'react-native';
 import styles from "./styles";
 import {Store} from '../../redux/StoreType';
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
+import axios from "axios";
+import {getUsers} from "../../utils/endPoints";
+import {storeResponse} from "../../redux/actions";
+import Header from "./Header";
 
 interface FlatlistProps {
-    loading: boolean;
+    navigate: () => void;
 }
+
 const Flatlist: React.FC<FlatlistProps> = (props) => {
-    const {loading} = props;
+    const { navigate } = props;
+    const dispatch = useDispatch();
     const {dataList} = useSelector((state: Store) => state.app);
+    const [loading, setLoading] = useState<boolean>(false);
+
+    // fetch data if not found in redux
+    const fetchUsersData = async () => {
+        if(!dataList || dataList.length < 1){
+            setLoading(true);
+            const res = await axios.get(getUsers);
+            if(res.data?.length  > 0){
+                dispatch(storeResponse(res.data))
+            }
+            setLoading(false);
+        }
+    }
+
+    useEffect(() => {
+        fetchUsersData();
+    },[])
 
     const renderItem = ({item}) => {
         return (
@@ -21,6 +44,7 @@ const Flatlist: React.FC<FlatlistProps> = (props) => {
 
     return (
         <View style={styles.flatListContainer}>
+            <Header navigate={navigate} add={false} />
             <FlatList
                 data={dataList}
                 renderItem={renderItem}

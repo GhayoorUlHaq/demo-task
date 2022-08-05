@@ -1,21 +1,21 @@
-import React, {Dispatch, SetStateAction} from 'react';
+import React from 'react';
 import {Image, Text, TouchableOpacity, View} from "react-native";
 import styles from "./styles";
 
 interface HeaderProps {
     add: boolean;
-    setAdd: Dispatch<SetStateAction<boolean>>
+    navigate: () => void;
 }
 
 const Header: React.FC<HeaderProps> = (props) => {
-    const {add, setAdd} = props;
+    const {add, navigate} = props;
 
     return (
         <View style={styles.headerContainer}>
             <View style={styles.leftContainer}>
                 {
                     add ?
-                        <TouchableOpacity onPress={()=> setAdd(false)}>
+                        <TouchableOpacity onPress={()=> navigate()}>
                             <Image style={styles.backImage} source={require('../../../assets/icons/back.png')} />
                         </TouchableOpacity> : <></>
                 }
@@ -27,7 +27,7 @@ const Header: React.FC<HeaderProps> = (props) => {
             <View style={styles.rightContainer}>
                 {
                     !add ?
-                        <TouchableOpacity onPress={()=> setAdd(true)}>
+                        <TouchableOpacity onPress={()=> navigate()}>
                             <Text style={styles.rightText}>Add</Text>
                         </TouchableOpacity> : <></>
                 }

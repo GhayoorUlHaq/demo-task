@@ -18,6 +18,8 @@
     "react-dom": "17.0.2",
     "react-native": "0.68.2",
     "react-native-navigation": "^7.30.0-alpha",
+    "react-native-pager-view": "^5.4.25",
+    "react-native-tab-view": "^3.1.1",
     "react-native-web": "0.17.7",
     "react-redux": "^8.0.2",
     "redux": "^4.2.0",
