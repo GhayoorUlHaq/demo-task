@@ -32,7 +32,7 @@ const AddFoam: React.FC<AddFoamProps> = (props) => {
                 placeholder={'Add your text here'}
                 multiline={true}
                 style={styles.textInput} />
-            <Button disabled={!(value.length>0)} title={'Done'} onPress={handleDoneButton} />
+            <Button enableVibration={true} disabled={!(value.length>0)} title={'Done'} onPress={handleDoneButton} />
         </View>
     );
 };
