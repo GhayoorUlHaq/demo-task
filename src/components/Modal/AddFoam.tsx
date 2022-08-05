@@ -4,14 +4,10 @@ import styles from './styles';
 import Button from '../Button';
 import {storeRecord} from "../../redux/actions";
 import {useDispatch} from "react-redux";
-import Header from "./Header";
+import {Navigation} from "react-native-navigation";
 
-interface AddFoamProps {
-    navigate: () => void;
-}
-
-const AddFoam: React.FC<AddFoamProps> = (props) => {
-    const { navigate } = props;
+const AddFoam  = (props) => {
+    const {componentId} = props;
     const dispatch = useDispatch();
     const [value, setValue] = useState<string>('');
 
@@ -19,12 +15,12 @@ const AddFoam: React.FC<AddFoamProps> = (props) => {
     const handleDoneButton = () => {
         dispatch(storeRecord(value));
         setValue('');
-        navigate();
+        Navigation.pop(componentId)
+
     }
 
     return (
         <View style={styles.foamContainer}>
-            <Header navigate={navigate} add={true} />
             <TextInput
                 autoFocus={false}
                 value={value}
@@ -32,9 +28,28 @@ const AddFoam: React.FC<AddFoamProps> = (props) => {
                 placeholder={'Add your text here'}
                 multiline={true}
                 style={styles.textInput} />
-            <Button enableVibration={true} disabled={!(value.length>0)} title={'Done'} onPress={handleDoneButton} />
+            <Button
+                enableVibration={true}
+                disabled={!(value.length>0)}
+                title={'Done'}
+                onPress={handleDoneButton}
+            />
         </View>
     );
 };
+
+AddFoam.options = {
+    topBar: {
+        animate: true,
+        visible: true,
+        title: {
+            text: 'Adding data'
+        },
+        backButton: {
+            color: '#9b9b9b',
+            showTitle: false,
+        }
+    }
+}
 
 export default AddFoam;

@@ -6,17 +6,38 @@ import {useDispatch, useSelector} from "react-redux";
 import axios from "axios";
 import {getUsers} from "../../utils/endPoints";
 import {storeResponse} from "../../redux/actions";
-import Header from "./Header";
+import {Navigation} from "react-native-navigation";
+import AddFoam from "./AddFoam";
 
-interface FlatlistProps {
-    navigate: () => void;
-}
-
-const Flatlist: React.FC<FlatlistProps> = (props) => {
-    const { navigate } = props;
+const Flatlist = (props) => {
+    const {componentId} = props;
     const dispatch = useDispatch();
     const {dataList} = useSelector((state: Store) => state.app);
     const [loading, setLoading] = useState<boolean>(false);
+
+    const mergeOptions = () => {
+        Navigation.mergeOptions(componentId, {
+            topBar: {
+                rightButtons: [
+                    {
+                        id: 'modalRightButton',
+                        component: {
+                        name: 'ModalHeaderButton',
+                        passProps: {
+                            title: 'Add',
+                            onClick: () => {
+                                Navigation.push(componentId, {
+                                    component: {
+                                        name: 'AddFoam',
+                                    }
+                                });
+                            },
+                        }
+                    },
+                }],
+            }
+        });
+    }
 
     // fetch data if not found in redux
     const fetchUsersData = async () => {
@@ -31,6 +52,7 @@ const Flatlist: React.FC<FlatlistProps> = (props) => {
     }
 
     useEffect(() => {
+        mergeOptions();
         fetchUsersData();
     },[])
 
@@ -44,7 +66,6 @@ const Flatlist: React.FC<FlatlistProps> = (props) => {
 
     return (
         <View style={styles.flatListContainer}>
-            <Header navigate={navigate} add={false} />
             <FlatList
                 data={dataList}
                 renderItem={renderItem}
@@ -63,5 +84,18 @@ const Flatlist: React.FC<FlatlistProps> = (props) => {
         </View>
     );
 };
+
+Flatlist.options = {
+    topBar: {
+        visible: true,
+        title: {
+            text: 'My Modal'
+        },
+        backButton: {
+            visible: false,
+            showTitle: false
+        },
+    }
+}
 
 export default Flatlist;
